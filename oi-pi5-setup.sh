@@ -16,7 +16,7 @@ sudo timedatectl set-timezone UTC
 # Update the package list and upgrade existing packages (only once)
 sudo apt-get update && sudo apt-get upgrade -y
 
-CORE_PKGS=(git meson ninja-build pkg-config gcc g++ python3-pip curl iw)
+CORE_PKGS=(git meson ninja-build pkg-config gcc g++ python3-pip curl iw network-manager)
 
 echo "Installing Mavlink-Router dependencies..."
 for program in "${CORE_PKGS[@]}"; do
