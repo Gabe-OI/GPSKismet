@@ -10,10 +10,10 @@ PTY_FILE="/tmp/mavlink_pty_path"
 rm -f "$PTY_FILE"
 
 # Set up Wifi interface for monitor mode
-nmcli device set "$IFACE" managed no
-ip link set "$IFACE" down
-iw dev "$IFACE" set type monitor
-ip link set "$IFACE" up
+# nmcli device set "$IFACE" managed no
+# p link set "$IFACE" down
+# iw dev "$IFACE" set type monitor
+# ip link set "$IFACE" up 
 
 # Launch the Python bridge in the background
 "$SCRIPT" &
