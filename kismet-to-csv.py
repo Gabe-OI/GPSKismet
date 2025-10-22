@@ -122,7 +122,7 @@ packets['Channel'] = packets['frequency'].apply(freq_to_channel)
 
 # Combine SSID, MAC, channel, and frequency to form signal header
 packets['SSID'] = packets['sourcemac'].map(mac_to_ssid).fillna("NaN")
-packets['MAC_CH'] = packets['SSID'] + ' | ' + packets['sourcemac'] + ' @ CH' + packets['Channel'].astype(str) + ' (' + (packets['frequency'] / 1000).astype(str) + 'MHz)'
+packets['MAC_CH'] = packets['SSID'] + ' [' + packets['sourcemac'] + ']  @ CH' + packets['Channel'].astype(str) + ' (' + (packets['frequency'] / 1000).astype(str) + 'MHz)'
 
 # Group by second + MAC@CH and take max signal
 signal_grouped = (
