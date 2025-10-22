@@ -79,7 +79,7 @@ packets.sort_values('Timestamp', inplace=True)
 gps_grouped = (
     packets.groupby('ts_sec')
     .agg({
-        'lat': 'last', # Option C: last valid per second
+        'lat': 'last', # Last valid coordinate per second
         'lon': 'last',
         'alt': 'last',
         'heading': 'last'
@@ -114,25 +114,15 @@ def freq_to_channel(freq):
         elif 5955000 <= f <= 7115000: # 6 GHz
             return int((f - 5950000) / 5000)
         else:
-            return str(int(f)) # Fallback: raw frequency
+            return "NaN"
     except:
-        return str(freq)
+        return "NaN"
 
 packets['Channel'] = packets['frequency'].apply(freq_to_channel)
 
-# Combine SSID, MAC, channel, and frequency to form unique identifier
+# Combine SSID, MAC, channel, and frequency to form signal header
 packets['SSID'] = packets['sourcemac'].map(mac_to_ssid).fillna("NaN")
 packets['MAC_CH'] = packets['SSID'] + ' | ' + packets['sourcemac'] + ' @ CH' + packets['Channel'].astype(str) + ' (' + (packets['frequency'] / 1000).astype(str) + 'MHz)'
-
-# Group by second + MAC@CH and take max signal
-signal_grouped = (
-    packets.groupby(['ts_sec', 'MAC_CH'])['signal']
-    .max()
-    .reset_index()
-)
-
-# Pivot: timestamps as rows, MAC@CH as columns, signal as values
-pivot_signals = signal_grouped.pivot(index='ts_sec', columns='MAC_CH', values='signal')
 
 # Group by second + MAC@CH and take max signal
 signal_grouped = (
